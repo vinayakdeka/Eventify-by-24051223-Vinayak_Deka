@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>K Explore — Next-Gen Campus & Tech Event Management Platform</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              200: '#c7d2fe',
+              300: '#a5b4fc',
+              400: '#818cf8',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              800: '#3730a3',
+              900: '#312e81'
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-[#090d16] dark:text-slate-100 min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
+
+  <!-- Top Announcement & Live Countdown Ribbon -->
+  <div class="bg-gradient-to-r from-indigo-600 via-violet-600 to-cyan-600 text-white text-xs sm:text-sm py-2 px-4">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-white/20 backdrop-blur-sm">Live Season</span>
+        <span class="font-medium">K Explore 2026 Flagship Campus & Tech Events Registration is Open!</span>
+      </div>
+      <div class="flex items-center gap-3 ml-auto">
+        <span class="hidden md:inline text-white/85">Next Flagship Event starts in:</span>
+        <span id="ribbonCountdown" class="font-mono font-bold bg-slate-950/35 px-2.5 py-0.5 rounded-md border border-white/15">--d : --h : --m : --s</span>
+        <a href="#registerSection" class="underline font-semibold hover:text-cyan-200 transition-colors">Quick Register &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sticky Navigation Bar -->
+  <header class="sticky top-0 z-40 backdrop-blur-xl bg-white/85 dark:bg-[#090d16]/85 border-b border-slate-200/80 dark:border-slate-800/80 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      <!-- Brand Logo -->
+      <a href="#heroSection" class="flex items-center gap-3 group focus:outline-none">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-violet-500 to-cyan-500 flex items-center justify-center text-white font-display font-extrabold text-xl shadow-md shadow-indigo-500/25 group-hover:scale-105 transition-transform">
+          K
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="font-display font-extrabold text-lg tracking-tight text-slate-900 dark:text-white">K Explore</span>
+            <span class="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-semibold border border-indigo-500/20">Events</span>
+          </div>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-none">Discover &bull; Experience &bull; Register</p>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden md:flex items-center gap-1 lg:gap-2 text-sm font-medium">
+        <a href="#heroSection" class="px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors">Home</a>
+        <a href="#eventsSection" class="px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors">Explore Events</a>
+        <a href="#registerSection" class="px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors">Register</a>
+        <a href="#myRegistrationsSection" class="px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors flex items-center gap-1.5">
+          <span>My Registrations</span>
+          <span id="navRegCountBadge" class="px-1.5 py-0.5 text-[11px] font-mono font-bold rounded-full bg-indigo-600 text-white">0</span>
+        </a>
+      </nav>
+
+      <!-- Right Controls: Saved Filter, Theme Toggle, Primary CTA, Mobile Menu Button -->
+      <div class="flex items-center gap-2">
+        <!-- Bookmarked Events Quick Filter -->
+        <button id="navBookmarkBtn" type="button" class="relative p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100/70 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 hover:border-indigo-500/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all" title="Filter Bookmarked Events" aria-label="Filter Bookmarked Events">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+          </svg>
+          <span id="bookmarkCountBadge" class="hidden absolute -top-1 -right-1 w-4 h-4 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center">0</span>
+        </button>
+
+        <!-- Dark / Light Mode Toggle (Bonus Feature) -->
+        <button id="themeToggleBtn" type="button" class="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100/70 dark:bg-slate-800/60 text-slate-700 dark:text-slate-200 hover:border-indigo-500/50 transition-all text-xs font-semibold" aria-label="Toggle Dark or Light Mode">
+          <!-- Sun icon (shown in dark mode) -->
+          <svg id="themeIconSun" class="w-4 h-4 text-amber-400 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <!-- Moon icon (shown in light mode) -->
+          <svg id="themeIconMoon" class="w-4 h-4 text-indigo-600 block dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+          <span id="themeToggleText" class="hidden sm:inline">Light</span>
+        </button>
+
+        <!-- Primary Register CTA -->
+        <a href="#registerSection" class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs sm:text-sm shadow-md shadow-indigo-600/25 transition-all">
+          <span>Register Now</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+        </a>
+
+        <!-- Mobile Menu Button -->
+        <button id="mobileMenuBtn" type="button" class="md:hidden p-2 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300" aria-label="Toggle Mobile Navigation">
+          <svg id="mobileMenuOpenIcon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg id="mobileMenuCloseIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Collapsible Mobile Menu -->
+    <div id="mobileNavDrawer" class="hidden md:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0d1322] px-4 pt-3 pb-4 space-y-2">
+      <a href="#heroSection" class="mobile-nav-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-800">Home</a>
+      <a href="#eventsSection" class="mobile-nav-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-800">Explore Events</a>
+      <a href="#registerSection" class="mobile-nav-link block px-3 py-2 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-800">Event Registration</a>
+      <a href="#myRegistrationsSection" class="mobile-nav-link flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-800">
+        <span>My Registrations (LocalStorage)</span>
+        <span id="mobileRegCountBadge" class="px-2 py-0.5 text-xs font-mono font-bold rounded-full bg-indigo-600 text-white">0</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="flex-1">
+    <!-- HERO SECTION -->
+    <section id="heroSection" class="relative overflow-hidden py-10 sm:py-16 lg:py-20 border-b border-slate-200/70 dark:border-slate-800/80">
+      <!-- Ambient Background Glows -->
+      <div class="pointer-events-none absolute -top-32 -left-32 w-96 h-96 rounded-full bg-indigo-500/15 dark:bg-indigo-500/20 blur-3xl"></div>
+      <div class="pointer-events-none absolute top-20 right-0 w-96 h-96 rounded-full bg-cyan-500/15 dark:bg-cyan-500/15 blur-3xl"></div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          <!-- Left Column: Platform Intro, Search Jump, & Metrics -->
+          <div class="lg:col-span-7 space-y-6 animate-fade-up">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 dark:bg-indigo-500/15 border border-indigo-500/25 text-indigo-600 dark:text-indigo-300 text-xs font-semibold">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+              <span>K Explore &bull; Unified Campus Event Management Portal</span>
+            </div>
+
+            <h1 class="font-display font-extrabold text-3xl sm:text-5xl lg:text-[54px] tracking-tight text-slate-900 dark:text-white leading-[1.12]">
+              Experience the Most <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-500">Inspiring Tech, Design &amp; Cultural</span> Events.
+            </h1>
+
+            <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
+              Browse curated hackathons, design sprints, robotics expos, and live amphitheater nights. View full schedules, track live event countdowns, and secure your instant digital pass in seconds.
+            </p>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-wrap items-center gap-3.5 pt-1">
+              <a href="#eventsSection" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm sm:text-base shadow-lg shadow-indigo-600/30 transition-all hover:-translate-y-0.5">
+                <span>Explore Upcoming Events</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </a>
+              <button id="heroQuickRegisterBtn" type="button" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-white dark:bg-slate-800/90 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-100 font-semibold text-sm sm:text-base border border-slate-200 dark:border-slate-700 shadow-sm transition-all">
+                <svg class="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                </svg>
+                <span>Register for an Event</span>
+              </button>
+            </div>
+
+            <!-- Live Platform Metrics Bar -->
+            <div class="grid grid-cols-3 gap-3 sm:gap-6 pt-4 border-t border-slate-200/80 dark:border-slate-800/80 max-w-lg">
+              <div>
+                <p id="statTotalEvents" class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 dark:text-white">6</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Upcoming Flagship Events</p>
+              </div>
+              <div>
+                <p id="statOpenSeats" class="font-display font-extrabold text-2xl sm:text-3xl text-indigo-600 dark:text-indigo-400">412</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Available Passes Left</p>
+              </div>
+              <div>
+                <p id="statSavedRegs" class="font-display font-extrabold text-2xl sm:text-3xl text-emerald-600 dark:text-emerald-400">0</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Your Registrations</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Featured Spotlight Card with Live Countdown Timer -->
+          <div class="lg:col-span-5">
+            <div class="relative rounded-3xl overflow-hidden bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-2xl shadow-indigo-950/20">
+              <div class="relative h-56 sm:h-64 overflow-hidden">
+                <img src="assets/images/hero-stage.jpg" alt="K Explore Flagship Auditorium Stage" class="w-full h-full object-cover max-w-full" />
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+
+                <div class="absolute top-4 left-4 flex items-center gap-2">
+                  <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-indigo-600 text-white shadow-lg">Featured Spotlight</span>
+                  <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-900/80 text-cyan-300 backdrop-blur-md border border-cyan-400/30">Technology &amp; AI</span>
+                </div>
+
+                <div class="absolute bottom-4 left-4 right-4 text-white">
+                  <p id="heroSpotlightDate" class="text-xs font-mono text-cyan-300 mb-1">Loading date...</p>
+                  <h2 class="font-display font-bold text-xl sm:text-2xl leading-snug">K-Nexa AI &amp; Next-Gen Dev Hackathon 2026</h2>
+                  <p class="text-xs text-slate-300 mt-0.5 flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5 text-indigo-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span>Central Innovation Atrium, Campus Block B</span>
+                  </p>
+                </div>
+              </div>
+
+              <!-- Live 4-Unit Countdown Timer Inside Spotlight Card -->
+              <div class="p-5 sm:p-6 space-y-4">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Live Event Countdown</span>
+                  <span class="inline-flex items-center gap-1 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
+                    Registration Active
+                  </span>
+                </div>
+
+                <div class="grid grid-cols-4 gap-2.5 text-center">
+                  <div class="p-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200/70 dark:border-slate-700/70">
+                    <div id="heroCdDays" class="font-mono font-extrabold text-xl sm:text-2xl text-indigo-600 dark:text-indigo-400">03</div>
+                    <div class="text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Days</div>
+                  </div>
+                  <div class="p-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200/70 dark:border-slate-700/70">
+                    <div id="heroCdHours" class="font-mono font-extrabold text-xl sm:text-2xl text-indigo-600 dark:text-indigo-400">14</div>
+                    <div class="text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Hours</div>
+                  </div>
+                  <div class="p-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200/70 dark:border-slate-700/70">
+                    <div id="heroCdMinutes" class="font-mono font-extrabold text-xl sm:text-2xl text-indigo-600 dark:text-indigo-400">28</div>
+                    <div class="text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Mins</div>
+                  </div>
+                  <div class="p-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200/70 dark:border-slate-700/70">
+                    <div id="heroCdSeconds" class="font-mono font-extrabold text-xl sm:text-2xl text-cyan-600 dark:text-cyan-400">45</div>
+                    <div class="text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Secs</div>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-2.5 pt-1">
+                  <button id="heroViewSpotlightBtn" type="button" class="flex-1 py-2.5 px-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-indigo-500 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 transition-colors">
+                    View Full Details
+                  </button>
+                  <button id="heroRegisterSpotlightBtn" type="button" class="flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs sm:text-sm font-semibold shadow-md shadow-indigo-600/20 transition-all">
+                    Claim Spot &rarr;
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- UPCOMING & FEATURED EVENTS SECTION -->
+    <section id="eventsSection" class="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Section Header -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-widest text-indigo-600 dark:text-indigo-400 font-semibold">Discover &amp; Filter</span>
+          <h2 class="font-display font-extrabold text-2xl sm:text-3xl lg:text-4xl text-slate-900 dark:text-white mt-1">
+            Upcoming &amp; Featured Events
+          </h2>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">
+            Search by keyword, filter by category, inspect full agendas, and register with real-time seat tracking.
+          </p>
+        </div>
+
+        <!-- Active Filter Count & Reset -->
+        <div class="flex items-center gap-3 self-start md:self-auto">
+          <span id="ShowingEventsSummary" class="text-xs font-medium text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800">
+            Showing all 6 events
+          </span>
+          <button id="resetFiltersBtn" type="button" class="hidden text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+            Reset Filters
+          </button>
+        </div>
+      </div>
+
+      <!-- Search, Category Filter & Sort Toolbar -->
+      <div class="bg-white dark:bg-slate-900/90 rounded-2xl p-4 sm:p-5 border border-slate-200/90 dark:border-slate-800 shadow-sm mb-8 space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-3.5 items-center">
+          <!-- Search Input -->
+          <div class="md:col-span-7 relative">
+            <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input
+              id="eventSearchInput"
+              type="text"
+              placeholder="Search events by name, venue, category, or topic (e.g., AI, Music, UX, Drone)..."
+              class="w-full pl-10 pr-9 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+            />
+            <button id="clearSearchBtn" type="button" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200" aria-label="Clear search query">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Sort Dropdown -->
+          <div class="md:col-span-3">
+            <label for="eventSortSelect" class="sr-only">Sort Events</label>
+            <select
+              id="eventSortSelect"
+              class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+            >
+              <option value="date-asc">Sort: Date (Soonest First)</option>
+              <option value="featured">Sort: Featured Spotlight</option>
+              <option value="seats-asc">Sort: Filling Fast (Seats Left)</option>
+              <option value="name-asc">Sort: Event Name (A - Z)</option>
+            </select>
+          </div>
+
+          <!-- Featured Only Toggle -->
+          <div class="md:col-span-2 flex items-center justify-end">
+            <button
+              id="featuredOnlyToggle"
+              type="button"
+              class="w-full flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/90 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:border-indigo-500 transition-all"
+            >
+              <span>&#9733; Featured Only</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Category Filter Pills -->
+        <div id="categoryFilterBar" class="flex items-center gap-2 overflow-x-auto pb-1 pt-1">
+          <button type="button" data-category="All" class="category-pill shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-indigo-600 text-white shadow-sm transition-all">
+            All Events (6)
+          </button>
+          <button type="button" data-category="Technology" class="category-pill shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-slate-700 transition-all">
+            Technology &amp; AI
+          </button>
+          <button type="button" data-category="Cultural" class="category-pill shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-slate-700 transition-all">
+            Cultural &amp; Music
+          </button>
+          <button type="button" data-category="Design" class="category-pill shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-slate-700 transition-all">
+            Design &amp; UI/UX
+          </button>
+          <button type="button" data-category="Robotics" class="category-pill shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-slate-700 transition-all">
+            Robotics &amp; Hardware
+          </button>
+          <button type="button" data-category="Entrepreneurship" class="category-pill shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-slate-700 transition-all">
+            Entrepreneurship
+          </button>
+          <button type="button" data-category="Esports" class="category-pill shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-slate-700 transition-all">
+            Gaming &amp; Esports
+          </button>
+        </div>
+      </div>
+
+      <!-- Event Cards Grid -->
+      <div id="eventsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Populated dynamically via JS with full event cards, countdowns, and interactive triggers -->
+      </div>
+
+      <!-- Empty State when no event matches search/filter -->
+      <div id="eventsEmptyState" class="hidden text-center py-16 px-4 rounded-3xl bg-white dark:bg-slate-900 border border-dashed border-slate-300 dark:border-slate-800">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center mb-4">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+        <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">No Matching Events Found</h3>
+        <p class="text-sm text-slate-500 dark:text-slate-400 max-w-md mx-auto mt-1 mb-5">
+          We couldn't find any events matching your current search or filter criteria. Try clearing your search query or switching categories.
+        </p>
+        <button id="emptyStateResetBtn" type="button" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-sm transition-all">
+          Show All Events
+        </button>
+      </div>
+    </section>
+
+    <!-- EVENT REGISTRATION FORM SECTION -->
+    <section id="registerSection" class="py-12 sm:py-16 bg-slate-100/80 dark:bg-slate-900/50 border-y border-slate-200/80 dark:border-slate-800/80">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+
+          <!-- Left Column: Selected Event Preview & Validation Checklist -->
+          <div class="lg:col-span-5 space-y-6">
+            <div>
+              <span class="text-xs font-mono uppercase tracking-widest text-indigo-600 dark:text-indigo-400 font-semibold">Instant Digital Pass</span>
+              <h2 class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 dark:text-white mt-1">
+                Event Registration Portal
+              </h2>
+              <p class="text-sm text-slate-600 dark:text-slate-400 mt-1.5 leading-relaxed">
+                Select your preferred event below or click <strong>Register</strong> on any event card to auto-fill the event selector. All registrations are validated in real time and saved to your browser's Local Storage.
+              </p>
+            </div>
+
+            <!-- Live Selected Event Summary Card -->
+            <div id="selectedEventPreviewCard" class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 shadow-sm space-y-4">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-xs font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Currently Selected Event</span>
+                <span id="previewEventCategory" class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">Technology</span>
+              </div>
+              <div class="flex items-center gap-3.5">
+                <img id="previewEventImage" src="assets/images/event-ai-hackathon.jpg" alt="Selected event preview" class="w-20 h-16 rounded-xl object-cover shrink-0 border border-slate-200 dark:border-slate-700" />
+                <div class="min-w-0">
+                  <h3 id="previewEventTitle" class="font-display font-bold text-base text-slate-900 dark:text-white truncate">K-Nexa AI &amp; Next-Gen Dev Hackathon 2026</h3>
+                  <p id="previewEventDate" class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Nov 12, 2026 &bull; 09:30 AM IST</p>
+                  <p id="previewEventVenue" class="text-xs text-slate-500 dark:text-slate-400 truncate">Central Innovation Atrium, Campus Block B</p>
+                </div>
+              </div>
+              <div class="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
+                <span class="text-slate-500 dark:text-slate-400">Remaining Capacity:</span>
+                <span id="previewEventSeats" class="font-mono font-bold text-emerald-600 dark:text-emerald-400">68 / 120 Seats Available</span>
+              </div>
+              <button id="openSelectedEventDetailsBtn" type="button" class="w-full py-2 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-slate-700 text-xs font-semibold text-indigo-600 dark:text-indigo-400 transition-colors">
+                Inspect Full Event Schedule &amp; Speakers &rarr;
+              </button>
+            </div>
+
+            <!-- Form Validation Rules Info Box -->
+            <div class="rounded-2xl bg-indigo-50/70 dark:bg-indigo-950/25 border border-indigo-200/70 dark:border-indigo-900/50 p-4 space-y-2.5">
+              <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-300">
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                <span>Smart Form Validation Active</span>
+              </div>
+              <ul class="text-xs text-slate-600 dark:text-slate-300 space-y-1.5 pl-1">
+                <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span><span><strong>Full Name:</strong> Minimum 3 alphabetic characters required.</span></li>
+                <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span><span><strong>Email Address:</strong> Standard domain format &amp; duplicate-registration guard.</span></li>
+                <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span><span><strong>Phone Number:</strong> Valid 10-to-15 digit mobile number check.</span></li>
+                <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span><span><strong>Local Storage Sync:</strong> Instant persistence across page reloads.</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Right Column: Registration Form & Confirmation Banner -->
+          <div class="lg:col-span-7">
+            <div class="rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-xl p-6 sm:p-8">
+
+              <!-- Inline Confirmation Message Banner (Shown on Successful Submission) -->
+              <div id="registrationSuccessBanner" class="hidden mb-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 p-5 text-emerald-900 dark:text-emerald-200 animate-scale-pop">
+                <div class="flex items-start justify-between gap-3">
+                  <div class="flex items-start gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-md shadow-emerald-500/30">
+                      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="flex items-center gap-2 flex-wrap">
+                        <h3 class="font-display font-bold text-base text-emerald-950 dark:text-white">Registration Confirmed!</h3>
+                        <span id="confirmPassIdBadge" class="px-2 py-0.5 rounded bg-emerald-600 text-white font-mono text-xs font-bold">KEXP-2026-0000</span>
+                      </div>
+                      <p id="confirmMessageText" class="text-xs sm:text-sm text-emerald-800 dark:text-emerald-200/90 mt-1">
+                        Your registration has been verified and saved to Local Storage.
+                      </p>
+                      <div class="flex flex-wrap items-center gap-2.5 mt-3">
+                        <button id="viewPassModalBtn" type="button" class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold transition-colors">
+                          View Digital Ticket Pass
+                        </button>
+                        <a href="#myRegistrationsSection" class="px-3.5 py-1.5 rounded-lg bg-white/80 dark:bg-slate-800 hover:bg-white text-emerald-700 dark:text-emerald-300 text-xs font-semibold border border-emerald-500/30 transition-colors">
+                          View in My Registrations &darr;
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <button id="dismissSuccessBannerBtn" type="button" class="text-emerald-700 dark:text-emerald-300 hover:opacity-75 p-1" aria-label="Close confirmation message">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <form id="eventRegistrationForm" novalidate class="space-y-5">
+                <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
+                  <div>
+                    <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">Participant Details</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Fields marked with <span class="text-rose-500 font-bold">*</span> are mandatory</p>
+                  </div>
+                  <button id="fillSampleDataBtn" type="button" class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline px-2.5 py-1 rounded-lg bg-indigo-500/10">
+                    Auto-Fill Demo Participant
+                  </button>
+                </div>
+
+                <!-- Selected Event Dropdown -->
+                <div>
+                  <label for="regEvent" class="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                    Select Event <span class="text-rose-500">*</span>
+                  </label>
+                  <select
+                    id="regEvent"
+                    name="regEvent"
+                    required
+                    class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                  >
+                    <!-- Populated dynamically from events catalog -->
+                  </select>
+                  <p id="errEvent" class="hidden text-xs text-rose-500 font-medium mt-1.5"></p>
+                </div>
+
+                <!-- Row 1: Full Name & Email Address -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label for="regName" class="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                      Participant Full Name <span class="text-rose-500">*</span>
+                    </label>
+                    <input
+                      id="regName"
+                      name="regName"
+                      type="text"
+                      required
+                      placeholder="e.g., Aarav Sharma"
+                      class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                    />
+                    <p id="errName" class="hidden text-xs text-rose-500 font-medium mt-1.5"></p>
+                  </div>
+
+                  <div>
+                    <label for="regEmail" class="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                      Email Address <span class="text-rose-500">*</span>
+                    </label>
+                    <input
+                      id="regEmail"
+                      name="regEmail"
+                      type="email"
+                      required
+                      placeholder="e.g., aarav.sharma@university.edu"
+                      class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                    />
+                    <p id="errEmail" class="hidden text-xs text-rose-500 font-medium mt-1.5"></p>
+                  </div>
+                </div>
+
+                <!-- Row 2: Phone Number & Pass Category -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label for="regPhone" class="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                      Phone Number <span class="text-rose-500">*</span>
+                    </label>
+                    <input
+                      id="regPhone"
+                      name="regPhone"
+                      type="tel"
+                      required
+                      placeholder="e.g., +91 9876543210"
+                      class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                    />
+                    <p id="errPhone" class="hidden text-xs text-rose-500 font-medium mt-1.5"></p>
+                  </div>
+
+                  <div>
+                    <label for="regPassType" class="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                      Participant Pass Tier
+                    </label>
+                    <select
+                      id="regPassType"
+                      name="regPassType"
+                      class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                    >
+                      <option value="Standard Student Pass (Free)">Standard Student Pass (Free)</option>
+                      <option value="Team / Hackathon Delegate Pass">Team / Hackathon Delegate Pass</option>
+                      <option value="VIP Front-Row & Workshop Kit">VIP Front-Row &amp; Workshop Kit</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Row 3: Institution / Roll Number & Notes -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label for="regCollege" class="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                      Department / Roll ID (Optional)
+                    </label>
+                    <input
+                      id="regCollege"
+                      name="regCollege"
+                      type="text"
+                      placeholder="e.g., CSE - 2305104"
+                      class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                    />
+                  </div>
+
+                  <div>
+                    <label for="regNotes" class="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                      Team Name / Special Requirements
+                    </label>
+                    <input
+                      id="regNotes"
+                      name="regNotes"
+                      type="text"
+                      placeholder="e.g., Team NeuralCraft / Lab Access"
+                      class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                    />
+                  </div>
+                </div>
+
+                <!-- Code of Conduct Consent Checkbox -->
+                <div class="pt-1">
+                  <label class="flex items-start gap-2.5 cursor-pointer select-none">
+                    <input
+                      id="regConsent"
+                      type="checkbox"
+                      checked
+                      class="mt-0.5 w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                    />
+                    <span class="text-xs text-slate-600 dark:text-slate-300">
+                      I confirm that the participant details entered above are accurate and agree to the K Explore Event Code of Conduct. <span class="text-rose-500">*</span>
+                    </span>
+                  </label>
+                  <p id="errConsent" class="hidden text-xs text-rose-500 font-medium mt-1"></p>
+                </div>
+
+                <!-- Submit & Clear Buttons -->
+                <div class="flex flex-wrap items-center gap-3 pt-2">
+                  <button
+                    id="submitRegistrationBtn"
+                    type="submit"
+                    class="flex-1 min-w-[200px] py-3.5 px-6 rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold text-sm shadow-lg shadow-indigo-600/25 transition-all flex items-center justify-center gap-2"
+                  >
+                    <span>Complete Event Registration</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </button>
+                  <button
+                    id="resetFormBtn"
+                    type="button"
+                    class="py-3.5 px-5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 transition-colors"
+                  >
+                    Clear Form
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- BONUS FEATURE: LOCAL STORAGE REGISTRATION DATA MANAGEMENT DASHBOARD -->
+    <section id="myRegistrationsSection" class="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
+        <div>
+          <div class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-emerald-600 dark:text-emerald-400 font-semibold">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span>Local Storage Persistence Engine</span>
+          </div>
+          <h2 class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 dark:text-white mt-1">
+            Registered Participants &amp; Pass Manager
+          </h2>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">
+            Manage all registrations stored in <code class="px-1.5 py-0.5 rounded bg-slate-200/70 dark:bg-slate-800 font-mono text-xs">localStorage</code>. Search records, inspect digital passes, export CSV/JSON, or cancel registrations.
+          </p>
+        </div>
+
+        <!-- Management Action Buttons -->
+        <div class="flex flex-wrap items-center gap-2.5">
+          <button id="seedDemoRegsBtn" type="button" class="px-3.5 py-2 rounded-xl border border-indigo-500/30 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-600 dark:text-indigo-300 text-xs font-semibold transition-colors">
+            + Load Sample Registrations
+          </button>
+          <button id="exportCsvBtn" type="button" class="px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-indigo-500 text-slate-700 dark:text-slate-200 text-xs font-semibold transition-colors">
+            Export CSV
+          </button>
+          <button id="clearAllRegsBtn" type="button" class="px-3.5 py-2 rounded-xl border border-rose-500/30 bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 text-xs font-semibold transition-colors">
+            Clear Storage
+          </button>
+        </div>
+      </div>
+
+      <!-- Search & Filter Bar for Saved Registrations -->
+      <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+        <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="relative flex-1 max-w-md">
+            <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input
+              id="regManagerSearchInput"
+              type="text"
+              placeholder="Filter saved registrations by name, email, pass ID, or event..."
+              class="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+          <div class="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400">
+            <span>Storage Key: <code class="font-mono text-indigo-600 dark:text-indigo-400">k_explore_registrations_v1</code></span>
+            <span class="font-semibold text-slate-800 dark:text-slate-200" id="regTableCountLabel">0 Records</span>
+          </div>
+        </div>
+
+        <!-- Responsive Registrations Table -->
+        <div id="registrationsTableWrapper" class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/50 text-[11px] font-mono uppercase text-slate-500 dark:text-slate-400">
+                <th class="py-3.5 px-4">Pass ID</th>
+                <th class="py-3.5 px-4">Participant</th>
+                <th class="py-3.5 px-4">Contact</th>
+                <th class="py-3.5 px-4">Registered Event</th>
+                <th class="py-3.5 px-4">Pass Tier</th>
+                <th class="py-3.5 px-4">Timestamp</th>
+                <th class="py-3.5 px-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="registrationsTableBody" class="divide-y divide-slate-200/70 dark:divide-slate-800 text-xs sm:text-sm">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Empty State for Registrations Table -->
+        <div id="registrationsEmptyState" class="hidden py-12 px-4 text-center">
+          <p class="font-display font-semibold text-base text-slate-800 dark:text-slate-200">No Registrations Stored Yet</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 max-w-md mx-auto mt-1 mb-4">
+            Submit the registration form above or click "Load Sample Registrations" to test Local Storage persistence.
+          </p>
+          <a href="#registerSection" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold transition-all">
+            <span>Register Your First Event</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white dark:bg-[#070a12] border-t border-slate-200 dark:border-slate-800/80 py-10 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
+      <div class="flex items-center gap-3">
+        <div class="w-7 h-7 rounded-lg bg-indigo-600 text-white font-display font-bold flex items-center justify-center">K</div>
+        <span><strong>K Explore</strong> &mdash; Responsive Event Management Platform (HTML5, CSS3, Tailwind CSS &amp; JavaScript)</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="#heroSection" class="hover:text-indigo-500 transition-colors">Back to Top &uarr;</a>
+        <a href="#eventsSection" class="hover:text-indigo-500 transition-colors">Events</a>
+        <a href="#registerSection" class="hover:text-indigo-500 transition-colors">Register</a>
+        <a href="#myRegistrationsSection" class="hover:text-indigo-500 transition-colors">LocalStorage Manager</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- EVENT DETAILS MODAL (Interactive View Details + Direct Register Option) -->
+  <div id="eventDetailModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 bg-slate-950/75 backdrop-blur-sm">
+    <div class="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl animate-scale-pop">
+      <!-- Top Cover Image -->
+      <div class="relative h-56 sm:h-72">
+        <img id="modalEventImage" src="assets/images/event-ai-hackathon.jpg" alt="Event detail banner" class="w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/45 to-transparent"></div>
+        <button id="closeEventModalBtn" type="button" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-900/75 text-white hover:bg-slate-900 flex items-center justify-center border border-white/15 transition-colors" aria-label="Close Event Details Modal">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        <div class="absolute bottom-4 left-6 right-6 text-white">
+          <div class="flex flex-wrap items-center gap-2 mb-2">
+            <span id="modalEventCategory" class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-indigo-600 text-white">Technology</span>
+            <span id="modalEventCountdown" class="px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold bg-slate-900/80 text-cyan-300 border border-cyan-400/30">Starts in --</span>
+          </div>
+          <h2 id="modalEventTitle" class="font-display font-extrabold text-xl sm:text-3xl">Event Title</h2>
+        </div>
+      </div>
+
+      <!-- Modal Content Body -->
+      <div class="p-6 sm:p-8 space-y-6">
+        <!-- Key Metadata Row -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+          <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/70 dark:border-slate-700/70">
+            <p class="text-[11px] font-mono uppercase text-slate-400">Date &amp; Time</p>
+            <p id="modalEventDateTime" class="text-xs sm:text-sm font-semibold text-slate-900 dark:text-white mt-0.5">--</p>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/70 dark:border-slate-700/70">
+            <p class="text-[11px] font-mono uppercase text-slate-400">Venue Location</p>
+            <p id="modalEventVenue" class="text-xs sm:text-sm font-semibold text-slate-900 dark:text-white mt-0.5">--</p>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/70 dark:border-slate-700/70">
+            <p class="text-[11px] font-mono uppercase text-slate-400">Seat Availability</p>
+            <p id="modalEventSeats" class="text-xs sm:text-sm font-mono font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">--</p>
+          </div>
+        </div>
+
+        <!-- Full Overview -->
+        <div>
+          <h3 class="font-display font-bold text-sm uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">About This Event</h3>
+          <p id="modalEventDescription" class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed"></p>
+        </div>
+
+        <!-- Agenda & Highlights -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/70 dark:border-slate-800">
+            <h4 class="font-display font-bold text-xs uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-2.5">Event Schedule &amp; Agenda</h4>
+            <ul id="modalEventAgenda" class="space-y-2 text-xs text-slate-700 dark:text-slate-300"></ul>
+          </div>
+          <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/70 dark:border-slate-800">
+            <h4 class="font-display font-bold text-xs uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-2.5">Speakers &amp; Perks</h4>
+            <ul id="modalEventSpeakers" class="space-y-2 text-xs text-slate-700 dark:text-slate-300"></ul>
+          </div>
+        </div>
+
+        <!-- Action Footer -->
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+          <button id="modalBookmarkBtn" type="button" class="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:border-indigo-500 transition-colors">
+            Bookmark Event
+          </button>
+          <div class="flex items-center gap-3">
+            <button id="modalCancelBtn" type="button" class="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-200">
+              Close
+            </button>
+            <button id="modalProceedRegisterBtn" type="button" class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs sm:text-sm font-semibold shadow-lg shadow-indigo-600/25 transition-all">
+              Register for This Event &rarr;
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIGITAL TICKET PASS MODAL -->
+  <div id="ticketPassModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm">
+    <div class="relative w-full max-w-md rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden animate-scale-pop">
+      <div class="bg-gradient-to-r from-indigo-600 via-violet-600 to-cyan-600 p-6 text-white">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-mono uppercase tracking-widest bg-white/20 px-2.5 py-0.5 rounded-full">K Explore Official Pass</span>
+          <button id="closeTicketModalBtn" type="button" class="text-white/80 hover:text-white" aria-label="Close Digital Pass Modal">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <h3 id="ticketEventName" class="font-display font-extrabold text-xl mt-3">Event Name</h3>
+        <p id="ticketEventMeta" class="text-xs text-white/85 mt-1">Date &bull; Venue</p>
+      </div>
+      <div class="p-6 space-y-4">
+        <div class="grid grid-cols-2 gap-3 text-xs">
+          <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800">
+            <span class="text-slate-400 block">Participant</span>
+            <strong id="ticketHolderName" class="text-slate-900 dark:text-white text-sm">--</strong>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800">
+            <span class="text-slate-400 block">Pass ID</span>
+            <strong id="ticketPassId" class="font-mono text-indigo-600 dark:text-indigo-400 text-sm">--</strong>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800">
+            <span class="text-slate-400 block">Email</span>
+            <strong id="ticketHolderEmail" class="text-slate-900 dark:text-white truncate block">--</strong>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800">
+            <span class="text-slate-400 block">Phone</span>
+            <strong id="ticketHolderPhone" class="text-slate-900 dark:text-white">--</strong>
+          </div>
+        </div>
+        <div class="p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-between">
+          <div>
+            <span class="text-[11px] font-mono uppercase text-indigo-500 block">Pass Tier</span>
+            <strong id="ticketPassTier" class="text-xs text-slate-900 dark:text-white">Standard Student Pass</strong>
+          </div>
+          <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">VERIFIED</span>
+        </div>
+        <div class="flex items-center justify-end gap-2 pt-2">
+          <button id="printTicketBtn" type="button" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold">
+            Print / Save Pass
+          </button>
+          <button id="doneTicketBtn" type="button" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-semibold">
+            Done
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IN-PAGE CONFIRMATION MODAL (For Clearing LocalStorage) -->
+  <div id="confirmDialogModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm">
+    <div class="w-full max-w-sm rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 shadow-2xl animate-scale-pop">
+      <h3 id="confirmDialogTitle" class="font-display font-bold text-lg text-slate-900 dark:text-white">Confirm Action</h3>
+      <p id="confirmDialogMessage" class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-2">
+        Are you sure you want to clear all saved registrations from Local Storage?
+      </p>
+      <div class="flex items-center justify-end gap-2.5 mt-5">
+        <button id="confirmDialogCancelBtn" type="button" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300">
+          Cancel
+        </button>
+        <button id="confirmDialogApproveBtn" type="button" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-xs font-semibold text-white">
+          Confirm Clear
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+
+  <!-- APPLICATION JAVASCRIPT -->
+  <script src="js/app.js"></script>
+</body>
+</html>
